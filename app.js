@@ -99,11 +99,14 @@ function switchTab(tabName) {
 // Update footer for different tabs
 function updateFooterForTab(tabName) {
   const instructionEl = document.querySelector('.terminal-footer .instruction');
+  const jumpBtn = document.getElementById('jump-results');
   if (tabName === 'timeline') {
     progressEl.style.display = '';
+    jumpBtn.style.display = '';
     instructionEl.textContent = '點擊或按 Enter 繼續';
   } else {
     progressEl.style.display = 'none';
+    jumpBtn.style.display = 'none';
     instructionEl.textContent = '滾動閱讀 · 點擊分頁切換視角';
   }
 }
