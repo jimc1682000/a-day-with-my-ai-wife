@@ -2,6 +2,7 @@
 let currentIndex = 0;
 let isTyping = false;
 let started = false;
+let letterContent = '';
 
 // DOM Elements
 const terminalBody = document.getElementById('terminal-body');
@@ -9,8 +10,22 @@ const conversationEl = document.getElementById('conversation');
 const progressEl = document.getElementById('progress');
 const welcomeMessage = document.querySelector('.welcome-message');
 
+// Load letter content from markdown file
+async function loadLetterContent() {
+  try {
+    const response = await fetch('letter.md');
+    const markdown = await response.text();
+    // Remove the H1 title since we have section header
+    letterContent = marked.parse(markdown.replace(/^# .+\n\n/, ''));
+  } catch (error) {
+    console.error('Error loading letter:', error);
+    letterContent = '<p>無法載入情書內容</p>';
+  }
+}
+
 // Initialize
-function init() {
+async function init() {
+  await loadLetterContent();
   updateProgress();
 
   // Click to advance
@@ -92,11 +107,7 @@ function showNextMessage() {
     }
   }
 
-  // Special handling for love letter (show all at once, it's too long to type)
-  const letterEl = messageEl.querySelector('.love-letter');
-  if (letterEl && msg.type === 'letter') {
-    letterEl.innerHTML = msg.text.replace(/\n/g, '<br>');
-  }
+  // Letter content is pre-rendered from markdown in createMessageElement
 
   // Scroll to bottom
   scrollToBottom();
@@ -160,7 +171,8 @@ function createMessageElement(msg) {
       break;
 
     case 'letter':
-      div.innerHTML = `<div class="love-letter"></div>`;
+      div.id = 'letter';  // 錨點
+      div.innerHTML = `<div class="love-letter">${letterContent}</div>`;
       break;
 
     case 'end':
@@ -301,13 +313,10 @@ function showMessagesWithAnimation(messages, index = 0) {
   const letterEl = messageEl.querySelector('.love-letter');
 
   // Determine what to animate
-  if (msg.type === 'code' || msg.type === 'table' || msg.type === 'end') {
-    // No typing for these, show immediately
+  if (msg.type === 'code' || msg.type === 'table' || msg.type === 'end' || msg.type === 'letter') {
+    // No typing for these, show immediately (letter is pre-rendered from markdown)
     scrollToBottom();
     setTimeout(() => showMessagesWithAnimation(messages, index + 1), 100);
-  } else if (letterEl) {
-    // Love letter - slower typing effect (50ms vs 8ms for others)
-    typeTextThen(letterEl, msg.text.replace(/\n/g, '\n'), () => showMessagesWithAnimation(messages, index + 1), 50);
   } else if (narrationEl) {
     // Narration with line breaks
     const text = msg.text || '';
@@ -376,10 +385,7 @@ function showNextMessageImmediate() {
   if (narrationEl) {
     narrationEl.innerHTML = (msg.text || '').replace(/\n/g, '<br>');
   }
-  const letterEl = messageEl.querySelector('.love-letter');
-  if (letterEl) {
-    letterEl.innerHTML = (msg.text || '').replace(/\n/g, '<br>');
-  }
+  // Letter content is pre-rendered from markdown in createMessageElement
 
   currentIndex++;
   updateProgress();

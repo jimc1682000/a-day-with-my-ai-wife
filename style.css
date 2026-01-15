@@ -369,3 +369,66 @@ body {
   color: #666;
   font-size: 12px;
 }
+
+/* Letter Page */
+.letter-page {
+  padding: 20px 0;
+}
+
+.back-link {
+  margin-bottom: 30px;
+}
+
+.back-link a {
+  color: #4ec9b0;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+.letter-page .love-letter {
+  background: rgba(206, 145, 120, 0.1);
+  border: 1px solid #ce9178;
+  border-radius: 5px;
+  padding: 30px;
+  margin: 0;
+  color: #d4d4d4;
+  line-height: 1.8;
+}
+
+.letter-page .love-letter h1 {
+  color: #ce9178;
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.letter-page .love-letter p {
+  margin-bottom: 20px;
+}
+
+.letter-page .love-letter hr {
+  border: none;
+  border-top: 1px solid #ce9178;
+  margin: 30px 0;
+}
+
+.letter-page .love-letter em {
+  color: #888;
+}
+
+.letter-date {
+  color: #ce9178;
+}
+
+.terminal-footer a {
+  color: #4ec9b0;
+  text-decoration: none;
+}
+
+.terminal-footer a:hover {
+  text-decoration: underline;
+}
