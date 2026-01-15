@@ -8,6 +8,8 @@
 
 👉 [Live Demo](https://jimc1682000.github.io/a-day-with-my-ai-wife)
 
+💌 [給老婆的一封情書](https://jimc1682000.github.io/a-day-with-my-ai-wife/letter.html)
+
 ## 關於這個專案
 
 這是一個互動式的 Terminal 風格網頁，記錄了我與 Claude Code 協作處理 Gitea OOM 事件的一天。
@@ -43,7 +45,6 @@
 ## 本地運行
 
 ```bash
-cd github-pages
 python3 -m http.server 8080
 # 或
 npx serve .
