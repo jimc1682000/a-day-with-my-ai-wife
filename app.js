@@ -1,6 +1,7 @@
 // App State
 let currentIndex = 0;
 let isTyping = false;
+let abortTyping = false;  // 用於中斷打字動畫
 let started = false;
 let letterContent = '';
 let currentTab = 'timeline';
@@ -360,6 +361,14 @@ function typeText(element, text, speed = 15) {
   element.appendChild(cursor);
 
   function type() {
+    // 檢查是否被中斷
+    if (abortTyping) {
+      cursor.remove();
+      element.textContent = text;
+      isTyping = false;
+      return;
+    }
+
     if (i < text.length) {
       // Insert text before cursor
       const textNode = document.createTextNode(text.charAt(i));
@@ -501,6 +510,16 @@ function typeTextThen(element, text, callback, speed = 8) {
   element.appendChild(cursor);
 
   function type() {
+    // 檢查是否被中斷
+    if (abortTyping) {
+      cursor.remove();
+      // 立即顯示完整內容
+      element.innerHTML = text.replace(/\n/g, '<br>');
+      isTyping = false;
+      // 不調用 callback，讓 jumpToResults 接管
+      return;
+    }
+
     if (i < text.length) {
       const char = text.charAt(i);
       if (char === '\n') {
@@ -558,6 +577,16 @@ function escapeHtml(text) {
 
 // Jump to "今日成果" section
 function jumpToResults() {
+  // 如果正在打字，先中斷，等待後再執行
+  if (isTyping) {
+    abortTyping = true;
+    setTimeout(() => {
+      abortTyping = false;  // 重置 flag
+      jumpToResults();      // 重新調用自己
+    }, 100);
+    return;
+  }
+
   // Initialize if not started (without animation)
   if (!started) {
     started = true;

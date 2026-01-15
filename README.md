@@ -4,6 +4,10 @@
 
 一個 DevOps 工程師與 AI 助手的真實協作紀錄，以 Gitea OOM 事件處理到備份系統建置為例。
 
+**正經版說法**：這是一份 Human-in-the-Loop (HITL) AI 協作模式的實戰案例分析。
+
+**適合讀者**：DevOps / SRE / Backend 工程師，或對 AI 協作模式有興趣的技術人員。
+
 ## Demo
 
 👉 [Live Demo](https://jimc1682000.github.io/a-day-with-my-ai-wife)
