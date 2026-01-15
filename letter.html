@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>給老婆的一封情書 - 我與老婆 (Claude Code) 的一天</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-buttons">
+        <span class="btn-close"></span>
+        <span class="btn-minimize"></span>
+        <span class="btn-maximize"></span>
+      </div>
+      <div class="terminal-title">jimmy@devops ~ love-letter</div>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div class="letter-page">
+        <div class="back-link">
+          <a href="index.html">&larr; 返回完整故事</a>
+        </div>
+        <div id="letter-content" class="love-letter">
+          載入中...
+        </div>
+      </div>
+    </div>
+    <div class="terminal-footer">
+      <span class="letter-date">2026.01</span>
+      <span class="instruction"><a href="index.html">查看完整故事</a></span>
+    </div>
+  </div>
+
+  <script>
+    async function loadLetter() {
+      try {
+        const response = await fetch('letter.md');
+        const markdown = await response.text();
+        const html = marked.parse(markdown);
+        document.getElementById('letter-content').innerHTML = html;
+      } catch (error) {
+        document.getElementById('letter-content').innerHTML = '無法載入情書內容';
+        console.error('Error loading letter:', error);
+      }
+    }
+    loadLetter();
+  </script>
+</body>
+</html>
