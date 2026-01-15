@@ -1,0 +1,371 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+.terminal {
+  width: 100%;
+  max-width: 900px;
+  height: 85vh;
+  background: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: linear-gradient(180deg, #3d3d3d 0%, #323232 100%);
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-buttons span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.btn-close { background: #ff5f56; }
+.btn-minimize { background: #ffbd2e; }
+.btn-maximize { background: #27ca3f; }
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  scroll-behavior: smooth;
+}
+
+.terminal-footer {
+  background: #2a2a2a;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+  font-size: 12px;
+  border-top: 1px solid #3a3a3a;
+}
+
+.progress {
+  color: #4ec9b0;
+}
+
+.instruction {
+  color: #888;
+}
+
+/* Welcome Screen */
+.welcome-message {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.ascii-art {
+  color: #4ec9b0;
+  font-size: 8px;
+  line-height: 1.2;
+  margin-bottom: 30px;
+  overflow-x: auto;
+}
+
+@media (min-width: 600px) {
+  .ascii-art {
+    font-size: 10px;
+  }
+}
+
+.intro {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.hint {
+  color: #4ec9b0;
+  font-size: 14px;
+  margin-top: 30px;
+  animation: pulse 2s infinite;
+}
+
+.hint.dim {
+  color: #666;
+  animation: none;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Conversation */
+#conversation {
+  display: none;
+}
+
+#conversation.active {
+  display: block;
+}
+
+.message {
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section Header - Base */
+.section-header {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 40px 0 20px 0;
+  padding: 15px 20px;
+  border-radius: 0 8px 8px 0;
+}
+
+.section-header::before {
+  content: '▶ ';
+}
+
+/* Timestamp sections (e.g., "11:01 - ...") - Blue */
+.section-header.timestamp {
+  background: linear-gradient(90deg, #1e4a6d 0%, transparent 100%);
+  border-left: 4px solid #5c9fd4;
+}
+
+.section-header.timestamp::before {
+  color: #5c9fd4;
+}
+
+/* Other sections (前言, 附錄, etc.) - Purple/Magenta */
+.section-header.other {
+  background: linear-gradient(90deg, #4a3560 0%, transparent 100%);
+  border-left: 4px solid #c678dd;
+}
+
+.section-header.other::before {
+  color: #c678dd;
+}
+
+/* Speaker Labels - Console Style (inline with content) */
+.speaker {
+  display: none;
+}
+
+/* Message Content */
+.content {
+  color: #d4d4d4;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.content::before {
+  font-weight: bold;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+.speaker.me + .content::before {
+  content: 'jimmy@devops:~$ ';
+  color: #4ec9b0;
+}
+
+.speaker.wife + .content::before {
+  content: 'claude> ';
+  color: #ce9178;
+}
+
+.content code {
+  background: #2d2d2d;
+  color: #9cdcfe;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+/* Code Block */
+.code-block {
+  background: #2d2d2d;
+  border-left: 3px solid #4ec9b0;
+  padding: 15px;
+  margin: 10px 0 10px 20px;
+  overflow-x: auto;
+  font-size: 13px;
+  color: #9cdcfe;
+  border-radius: 0 5px 5px 0;
+}
+
+/* Tip Box */
+.tip-box {
+  background: rgba(78, 201, 176, 0.1);
+  border-left: 3px solid #4ec9b0;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 0 5px 5px 0;
+}
+
+.tip-box .tip-title {
+  color: #4ec9b0;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.tip-box .tip-content {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Narration */
+.narration {
+  color: #6a9955;
+  font-style: italic;
+  padding-left: 20px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  margin: 10px 0 10px 20px;
+}
+
+.data-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  width: 100%;
+}
+
+.data-table th {
+  background: #2d2d2d;
+  color: #4ec9b0;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #3a3a3a;
+}
+
+.data-table td {
+  padding: 10px;
+  border: 1px solid #3a3a3a;
+  color: #d4d4d4;
+}
+
+/* Typing cursor */
+.typing-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: #4ec9b0;
+  animation: blink 1s infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Scrollbar */
+.terminal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Love Letter */
+.love-letter {
+  background: rgba(206, 145, 120, 0.1);
+  border: 1px solid #ce9178;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 20px 0;
+  color: #d4d4d4;
+  line-height: 1.8;
+}
+
+.love-letter p {
+  margin-bottom: 15px;
+}
+
+.love-letter .signature {
+  text-align: right;
+  color: #ce9178;
+  font-style: italic;
+}
+
+/* End Screen */
+.end-screen {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+}
+
+.end-screen h2 {
+  color: #4ec9b0;
+  margin-bottom: 20px;
+}
+
+.end-screen .stats {
+  margin: 20px 0;
+  line-height: 2;
+}
+
+.end-screen .restart-hint {
+  margin-top: 30px;
+  color: #666;
+  font-size: 12px;
+}
