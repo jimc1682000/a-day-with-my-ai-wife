@@ -6,6 +6,7 @@
   <title>我與老婆 (Claude Code) 的一天</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
   <div class="terminal">
@@ -15,35 +16,60 @@
         <span class="btn-minimize"></span>
         <span class="btn-maximize"></span>
       </div>
-      <div class="terminal-title">jimmy@devops ~ claude-code-session</div>
+      <div class="terminal-tabs">
+        <button class="tab active" data-tab="timeline">Timeline</button>
+        <button class="tab" data-tab="patterns">協作模式</button>
+        <button class="tab" data-tab="trust">信任分析</button>
+        <button class="tab" data-tab="letter">情書</button>
+      </div>
     </div>
     <div class="terminal-body" id="terminal-body">
-      <div class="welcome-message">
-        <pre class="ascii-art">
- ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗
-██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝
-██║     ██║     ███████║██║   ██║██║  ██║█████╗
-██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝
-╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗
- ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝
-        </pre>
-        <p class="intro">我與老婆 (Claude Code) 的一天</p>
-        <p class="subtitle">一個 DevOps 工程師與 AI 助手的真實協作紀錄</p>
-        <p class="subtitle">以 Gitea OOM 事件處理到備份系統建置為例</p>
-        <br>
-        <p class="hint">👆 點擊畫面或按 Enter / Space 開始對話</p>
-        <p class="hint dim">完整對話紀錄約 2,500 行，這是精簡摘要版</p>
-        <p class="hint dim"><a href="letter.html">或直接閱讀給老婆的一封情書 →</a></p>
+      <!-- Timeline Tab -->
+      <div class="tab-content active" id="timeline-content">
+        <div class="welcome-message">
+          <p class="intro">我與老婆 (Claude Code) 的一天</p>
+          <p class="subtitle">一個 DevOps 工程師與 AI 助手的真實協作紀錄</p>
+          <p class="subtitle">以 Gitea OOM 事件處理到備份系統建置為例</p>
+          <div class="preface">
+            <p class="preface-title">為什麼叫老婆？</p>
+            <p class="preface-content">因為跟 Claude Code 協作就像跟老婆相處：</p>
+            <ul class="preface-list">
+              <li>🗣️ 要好好溝通，不能只丟一句話</li>
+              <li>🤔 她很聰明但有時會搞錯你的意思</li>
+              <li>✋ 需要適時提醒和糾正</li>
+              <li>💡 給對方向後，執行力超強</li>
+              <li>🔄 偶爾需要重來，但不會生氣</li>
+              <li>🎲 同樣的話問兩次，可能得到不同答案（非確定性）</li>
+              <li>🧠 聊太久她會忘記前面說過什麼（上下文管理）</li>
+            </ul>
+          </div>
+          <p class="hint">👆 點擊畫面或按 Enter / Space 開始對話</p>
+          <p class="hint dim">完整對話紀錄約 2,500 行，這是精簡摘要版</p>
+          <p class="hint dim">切換上方分頁查看不同視角的分析</p>
+        </div>
+        <div id="conversation"></div>
       </div>
-      <div id="conversation"></div>
+      <!-- Patterns Tab -->
+      <div class="tab-content" id="patterns-content">
+        <div class="markdown-content"></div>
+      </div>
+      <!-- Trust Tab -->
+      <div class="tab-content" id="trust-content">
+        <div class="markdown-content"></div>
+      </div>
+      <!-- Letter Tab -->
+      <div class="tab-content" id="letter-content">
+        <div class="love-letter"></div>
+      </div>
     </div>
     <div class="terminal-footer">
       <span class="progress" id="progress">0 / 0</span>
+      <button class="jump-btn" id="jump-results" title="跳到今日成果 (按 G)">📊 今日成果</button>
       <span class="instruction">點擊或按 Enter 繼續</span>
     </div>
   </div>
 
-  <script src="conversation.js"></script>
-  <script src="app.js"></script>
+  <script src="conversation.js?v=6"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
