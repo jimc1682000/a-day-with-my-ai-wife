@@ -1,8 +1,4 @@
 const conversationData = [
-  // 前言
-  { type: 'section', text: '前言：為什麼叫老婆？' },
-  { type: 'narration', text: '因為跟 Claude Code 協作就像跟老婆相處：\n🗣️ 要好好溝通，不能只丟一句話\n🤔 她很聰明但有時會搞錯你的意思\n✋ 需要適時提醒和糾正\n💡 給對方向後，執行力超強\n🔄 偶爾需要重來，但不會生氣\n🎲 同樣的話問兩次，可能得到不同答案（非確定性）\n🧠 聊太久她會忘記前面說過什麼（上下文管理）' },
-
   // 11:01
   { type: 'section', text: '11:01 - 早安，今天 Gitea OOM 了' },
   { type: 'me', text: '剛剛我們的 git-server 被 OOM killed 了，不只 gitea 被砍，supervisord 也被 systemctl 砍了。幫我查一下原因。' },
@@ -201,10 +197,6 @@ const conversationData = [
     ['「tag-based lifecycle」', 's5cmd 不支援', '改用 prefix-based'],
     ['「備份排 18:00」', '跟 health_check 撞', '改到 20:00']
   ]},
-
-  // 給老婆的一封情書
-  { type: 'section', text: '給老婆的一封情書' },
-  { type: 'letter', src: 'letter.md' },  // 從 letter.md 動態載入
 
   // 結尾
   { type: 'end', text: '7.5 小時的協作<br>200+ 行程式碼<br>14 個協作心法<br>7 次糾正<br><br>— 2026.01 某個 Gitea OOM 事件處理紀錄 —' }

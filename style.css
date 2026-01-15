@@ -56,6 +56,45 @@ body {
   font-size: 13px;
 }
 
+/* Terminal Tabs */
+.terminal-tabs {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  margin-left: 15px;
+}
+
+.terminal-tabs .tab {
+  background: #2a2a2a;
+  border: none;
+  color: #888;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s;
+}
+
+.terminal-tabs .tab:hover {
+  background: #3a3a3a;
+  color: #ccc;
+}
+
+.terminal-tabs .tab.active {
+  background: #1e1e1e;
+  color: #4ec9b0;
+}
+
+/* Tab Content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 .terminal-body {
   flex: 1;
   overflow-y: auto;
@@ -135,6 +174,43 @@ body {
 
 .hint.dim a:hover {
   text-decoration: underline;
+}
+
+/* Preface section on welcome screen */
+.preface {
+  text-align: left;
+  max-width: 500px;
+  margin: 25px auto;
+  padding: 20px;
+  background: rgba(78, 201, 176, 0.1);
+  border-left: 3px solid #4ec9b0;
+  border-radius: 0 8px 8px 0;
+}
+
+.preface-title {
+  color: #4ec9b0;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.preface-content {
+  color: #d4d4d4;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.preface-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.preface-list li {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.8;
+  padding-left: 5px;
 }
 
 @keyframes pulse {
@@ -335,6 +411,138 @@ body {
   background: #4a4a4a;
 }
 
+/* Markdown Content (for tab pages) */
+.markdown-content {
+  color: #d4d4d4;
+  line-height: 1.8;
+  padding: 20px 0;
+}
+
+.markdown-content h1 {
+  color: #4ec9b0;
+  font-size: 28px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #4ec9b0;
+}
+
+.markdown-content h2 {
+  color: #c678dd;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.markdown-content h3 {
+  color: #e5c07b;
+  font-size: 16px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.markdown-content p {
+  margin-bottom: 15px;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #ce9178;
+  padding-left: 15px;
+  margin: 20px 0;
+  color: #ce9178;
+  font-style: italic;
+}
+
+.markdown-content pre {
+  background: #2d2d2d;
+  border-left: 3px solid #4ec9b0;
+  padding: 15px;
+  margin: 15px 0;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.4;
+  border-radius: 0 5px 5px 0;
+}
+
+.markdown-content code {
+  background: #2d2d2d;
+  color: #9cdcfe;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 15px 0;
+  font-size: 13px;
+}
+
+.markdown-content th {
+  background: #2d2d2d;
+  color: #4ec9b0;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #3a3a3a;
+}
+
+.markdown-content td {
+  padding: 10px;
+  border: 1px solid #3a3a3a;
+  color: #d4d4d4;
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin: 15px 0;
+  padding-left: 25px;
+}
+
+.markdown-content li {
+  margin-bottom: 8px;
+}
+
+.markdown-content a {
+  color: #4ec9b0;
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #3a3a3a;
+  margin: 30px 0;
+}
+
+/* Mermaid diagrams */
+.mermaid-container {
+  background: #2d2d2d;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown-content strong {
+  color: #e5c07b;
+}
+
+.markdown-content em {
+  color: #98c379;
+}
+
 /* Love Letter */
 .love-letter {
   background: rgba(206, 145, 120, 0.1);
@@ -344,6 +552,15 @@ body {
   margin: 20px 0;
   color: #d4d4d4;
   line-height: 1.8;
+}
+
+/* Love Letter in tab - match markdown-content h1 style */
+#letter-content .love-letter h1 {
+  color: #4ec9b0;
+  font-size: 28px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #4ec9b0;
 }
 
 .love-letter p {
@@ -440,4 +657,27 @@ body {
 
 .terminal-footer a:hover {
   text-decoration: underline;
+}
+
+/* Jump button */
+.jump-btn {
+  background: #2d2d2d;
+  border: 1px solid #4ec9b0;
+  color: #4ec9b0;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.jump-btn:hover {
+  background: #4ec9b0;
+  color: #1e1e1e;
+}
+
+.jump-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

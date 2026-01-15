@@ -3,6 +3,8 @@ let currentIndex = 0;
 let isTyping = false;
 let started = false;
 let letterContent = '';
+let currentTab = 'timeline';
+let loadedTabs = { timeline: true };
 
 // DOM Elements
 const terminalBody = document.getElementById('terminal-body');
@@ -10,7 +12,14 @@ const conversationEl = document.getElementById('conversation');
 const progressEl = document.getElementById('progress');
 const welcomeMessage = document.querySelector('.welcome-message');
 
-// Load letter content from markdown file
+// Tab content sources
+const tabSources = {
+  patterns: 'AI-COLLABORATION-PATTERNS.md',
+  trust: 'CLI-TRUST-ANALYSIS.md',
+  letter: 'letter.md'
+};
+
+// Load letter content from markdown file (for timeline embed)
 async function loadLetterContent() {
   try {
     const response = await fetch('letter.md');
@@ -23,39 +32,182 @@ async function loadLetterContent() {
   }
 }
 
+// Load markdown content for a tab
+async function loadTabContent(tabName) {
+  if (loadedTabs[tabName]) return;
+
+  const source = tabSources[tabName];
+  if (!source) return;
+
+  // Letter tab uses .love-letter, others use .markdown-content
+  const selector = tabName === 'letter'
+    ? `#${tabName}-content .love-letter`
+    : `#${tabName}-content .markdown-content`;
+  const contentEl = document.querySelector(selector);
+  if (!contentEl) return;
+
+  try {
+    // Add cache-busting to avoid stale content
+    const response = await fetch(source + '?_=' + Date.now());
+    const markdown = await response.text();
+    contentEl.innerHTML = marked.parse(markdown);
+
+    // Render mermaid diagrams
+    const mermaidEls = contentEl.querySelectorAll('.language-mermaid');
+    for (const el of mermaidEls) {
+      const code = el.textContent;
+      const container = document.createElement('div');
+      container.className = 'mermaid-container';
+      const { svg } = await mermaid.render('mermaid-' + Date.now(), code);
+      container.innerHTML = svg;
+      el.parentElement.replaceWith(container);
+    }
+
+    loadedTabs[tabName] = true;
+  } catch (error) {
+    console.error(`Error loading ${tabName}:`, error);
+    contentEl.innerHTML = '<p>無法載入內容</p>';
+  }
+}
+
+// Switch tab
+function switchTab(tabName) {
+  if (currentTab === tabName) return;
+
+  // Update tab buttons
+  document.querySelectorAll('.terminal-tabs .tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.tab === tabName);
+  });
+
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.toggle('active', content.id === `${tabName}-content`);
+  });
+
+  // Load content if needed
+  loadTabContent(tabName);
+
+  // Scroll to top
+  terminalBody.scrollTop = 0;
+
+  // Update footer based on tab
+  updateFooterForTab(tabName);
+
+  currentTab = tabName;
+}
+
+// Update footer for different tabs
+function updateFooterForTab(tabName) {
+  const instructionEl = document.querySelector('.terminal-footer .instruction');
+  if (tabName === 'timeline') {
+    progressEl.style.display = '';
+    instructionEl.textContent = '點擊或按 Enter 繼續';
+  } else {
+    progressEl.style.display = 'none';
+    instructionEl.textContent = '滾動閱讀 · 點擊分頁切換視角';
+  }
+}
+
+// Initialize Mermaid
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#4ec9b0',
+    primaryTextColor: '#d4d4d4',
+    primaryBorderColor: '#4ec9b0',
+    lineColor: '#888',
+    secondaryColor: '#2d2d2d',
+    tertiaryColor: '#1e1e1e',
+    background: '#1e1e1e',
+    mainBkg: '#2d2d2d',
+    nodeBorder: '#4ec9b0',
+    clusterBkg: '#2d2d2d',
+    clusterBorder: '#4ec9b0',
+    titleColor: '#4ec9b0',
+    edgeLabelBackground: '#2d2d2d'
+  }
+});
+
 // Initialize
 async function init() {
   await loadLetterContent();
   updateProgress();
 
-  // Click to advance
-  document.addEventListener('click', handleAdvance);
+  // Tab click handlers
+  document.querySelectorAll('.terminal-tabs .tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchTab(tab.dataset.tab);
+    });
+  });
+
+  // Click to advance (only for timeline tab)
+  document.addEventListener('click', (e) => {
+    // Ignore clicks on tabs
+    if (e.target.closest('.terminal-tabs')) return;
+    // Only advance on timeline tab
+    if (currentTab === 'timeline') {
+      handleAdvance();
+    }
+  });
 
   // Keyboard controls
   document.addEventListener('keydown', (e) => {
-    // Enter / Space / Arrow Down = next message
+    // Tab switching with number keys
+    if (e.key === '1') { switchTab('timeline'); return; }
+    if (e.key === '2') { switchTab('patterns'); return; }
+    if (e.key === '3') { switchTab('trust'); return; }
+    if (e.key === '4') { switchTab('letter'); return; }
+
+    // G = jump to results (timeline only)
+    if ((e.key === 'g' || e.key === 'G') && currentTab === 'timeline') {
+      e.preventDefault();
+      jumpToResults();
+      return;
+    }
+
+    // Enter / Space / Arrow Down = next message (timeline only)
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
       e.preventDefault();
-      handleAdvance();
+      if (currentTab === 'timeline') {
+        handleAdvance();
+      } else {
+        terminalBody.scrollBy({ top: 100, behavior: 'smooth' });
+      }
     }
     // Arrow Up = scroll up a bit
     if (e.key === 'ArrowUp') {
       e.preventDefault();
       terminalBody.scrollBy({ top: -100, behavior: 'smooth' });
     }
-    // Page Down = jump to next section
+    // Page Down = jump to next section (timeline) or scroll more (others)
     if (e.key === 'PageDown') {
       e.preventDefault();
-      scrollToNextSection();
+      if (currentTab === 'timeline') {
+        scrollToNextSection();
+      } else {
+        terminalBody.scrollBy({ top: 400, behavior: 'smooth' });
+      }
     }
-    // Page Up = jump to previous section
+    // Page Up = jump to previous section (timeline) or scroll more (others)
     if (e.key === 'PageUp') {
       e.preventDefault();
-      scrollToPreviousSection();
+      if (currentTab === 'timeline') {
+        scrollToPreviousSection();
+      } else {
+        terminalBody.scrollBy({ top: -400, behavior: 'smooth' });
+      }
     }
   });
 
   // Mouse wheel: normal scrolling (no override)
+
+  // Jump to results button
+  document.getElementById('jump-results').addEventListener('click', (e) => {
+    e.stopPropagation();
+    jumpToResults();
+  });
 }
 
 function handleAdvance() {
@@ -399,6 +551,36 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+// Jump to "今日成果" section
+function jumpToResults() {
+  // Initialize if not started (without animation)
+  if (!started) {
+    started = true;
+    welcomeMessage.style.display = 'none';
+    conversationEl.classList.add('active');
+  }
+
+  // Show ALL messages immediately (no animation)
+  while (currentIndex < conversationData.length) {
+    showNextMessageImmediate();
+  }
+
+  // Find and scroll to the results section
+  requestAnimationFrame(() => {
+    const sections = conversationEl.querySelectorAll('.section-header');
+    for (const section of sections) {
+      if (section.textContent === '今日成果') {
+        const messageEl = section.closest('.message');
+        if (messageEl) {
+          const targetTop = messageEl.offsetTop - 150;
+          terminalBody.scrollTop = targetTop;
+        }
+        return;
+      }
+    }
+  });
 }
 
 // Start
