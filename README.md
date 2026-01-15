@@ -6,7 +6,7 @@
 
 ## Demo
 
-👉 [Live Demo](https://jimmychen.github.io/a-day-with-my-ai-wife)
+👉 [Live Demo](https://jimc1682000.github.io/a-day-with-my-ai-wife)
 
 ## 關於這個專案
 
