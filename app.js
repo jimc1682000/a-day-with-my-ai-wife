@@ -16,6 +16,7 @@ const welcomeMessage = document.querySelector('.welcome-message');
 // Tab content sources
 const tabSources = {
   patterns: 'AI-COLLABORATION-PATTERNS.md',
+  guardrails: 'GUARDRAILS-GOVERNANCE.md',
   trust: 'CLI-TRUST-ANALYSIS.md',
   letter: 'letter.md'
 };
@@ -56,12 +57,17 @@ async function loadTabContent(tabName) {
     // Render mermaid diagrams
     const mermaidEls = contentEl.querySelectorAll('.language-mermaid');
     for (const el of mermaidEls) {
-      const code = el.textContent;
-      const container = document.createElement('div');
-      container.className = 'mermaid-container';
-      const { svg } = await mermaid.render('mermaid-' + Date.now(), code);
-      container.innerHTML = svg;
-      el.parentElement.replaceWith(container);
+      try {
+        const code = el.textContent;
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        const { svg } = await mermaid.render('mermaid-' + Date.now(), code);
+        container.innerHTML = svg;
+        el.parentElement.replaceWith(container);
+      } catch (mermaidError) {
+        console.warn('Mermaid render error:', mermaidError);
+        // Keep the original code block visible on error
+      }
     }
 
     loadedTabs[tabName] = true;
@@ -161,8 +167,9 @@ async function init() {
     // Tab switching with number keys
     if (e.key === '1') { switchTab('timeline'); return; }
     if (e.key === '2') { switchTab('patterns'); return; }
-    if (e.key === '3') { switchTab('trust'); return; }
-    if (e.key === '4') { switchTab('letter'); return; }
+    if (e.key === '3') { switchTab('guardrails'); return; }
+    if (e.key === '4') { switchTab('trust'); return; }
+    if (e.key === '5') { switchTab('letter'); return; }
 
     // G = jump to results (timeline only)
     if ((e.key === 'g' || e.key === 'G') && currentTab === 'timeline') {
