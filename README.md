@@ -14,7 +14,7 @@
 
 💌 [給老婆的一封情書](https://jimc1682000.github.io/a-day-with-my-ai-wife/letter.html)
 
-📊 [簡報投影片](https://jimc1682000.github.io/a-day-with-my-ai-wife/slides.html)
+📊 [簡報投影片](https://jimc1682000.github.io/a-day-with-my-ai-wife/slides.html) | [PDF 版本](https://jimc1682000.github.io/a-day-with-my-ai-wife/slides.pdf)
 
 ## 關於這個專案
 
