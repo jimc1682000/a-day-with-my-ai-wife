@@ -14,6 +14,8 @@
 
 💌 [給老婆的一封情書](https://jimc1682000.github.io/a-day-with-my-ai-wife/letter.html)
 
+📊 [簡報投影片](https://jimc1682000.github.io/a-day-with-my-ai-wife/slides.html)
+
 ## 關於這個專案
 
 這是一個互動式的 Terminal 風格網頁，記錄了我與 Claude Code 協作處理 Gitea OOM 事件的一天。
